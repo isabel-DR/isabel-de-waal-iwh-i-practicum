@@ -6,9 +6,13 @@ html
         link(rel="stylesheet", href="/css/style.css")
     body    
         h1 Books currently in HubSpot
-        .cards 
+        table
+            tr
+                th Book Name 
+                th Author 
+                th Genre
             each book in data
-                .card 
-                    h2.card__name #{book.properties.name}
-                    p.card__author #{book.properties.author}
-                    p.card__genre #{book.properties.genre}
+                tr
+                    td=book.properties.name
+                    td=book.properties.author
+                    td=book.properties.genre
