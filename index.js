@@ -1,12 +1,14 @@
 require('dotenv').config();
 
-
 const express = require('express');
 const axios = require('axios');
+
 const app = express();
 
 app.set('view engine', 'pug');
+
 app.use(express.static(__dirname + '/public'));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -17,14 +19,16 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS_TOKEN;
 
 // * Code for Route 1 goes here
 app.get('/', async (req, res) => {
-    const books = 'https://api.hubspot.com/crm/v3/objects/2-64393620/';
+    const books = 'https://api.hubspot.com/crm/v3/objects/2-64393620/?properties=name,author,genre';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     }
     try{
     const response = await axios.get(books, { headers })
-    res.json(response.data.results)
+    const data = response.data.results
+    console.log(JSON.stringify(data, null, 2)); // ADD THIS LINE
+    res.render('books', {title: 'Books | Hubspot APIs', data})
     } catch (error) {
         console.error(error);
     }
